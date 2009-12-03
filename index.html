@@ -55,6 +55,14 @@
 	   margin: 5px;
 	   background: #EEE;
 	 }
+	 
+	 .comments {
+	   font:14px helvetica, arial, "san-serif";
+	   float: left;
+	   width: 940px;
+	   margin: 10px 0;
+	   padding: 10px;
+	 }
 	</style>
 </head>
 <body>
@@ -251,11 +259,36 @@
 <p>
   What I like about it is I think in functions, not in objects. Working this way gets me to think about the code in a different manner.  This of course is style or fashion, and not right nor wrong. Just perhaps ugly or beautiful, which is in the eye of the beholder.
 </p>
+<script type="text/javascript">
+
+var disqus_developer = true;
+</script>
 <p>
-  <b><em>Questions? Comments?
+  <b><em>Questions? Comments?</em></b> Use the below XSS... or email me <em>john <span style="display:none">smith</span> at <span style="display:none">mail.</span> smokinggun.com</em>
+  
+<div class="comments">
+  <p id="disqus_thread">
+    <script type="text/javascript" src="http://disqus.com/forums/jweirongithub/embed.js"></script><noscript><a href="http://disqus.com/forums/jweirongithub/?url=ref">View the discussion thread.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+  </p>
+  <script type="text/javascript">
+  //<![CDATA[
+  (function() {
+  	var links = document.getElementsByTagName('a');
+  	var query = '?';
+  	for(var i = 0; i < links.length; i++) {
+  	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+  		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+  	}
+  	}
+  	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/jweirongithub/get_num_replies.js' + query + '"></' + 'script>');
+  })();
+  //]]>
+  </script>
+  
   <br/><br/><br/>
-</p>
 </div>
+</div>
+
 
 </body>
 </html>
