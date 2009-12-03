@@ -1,1 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>namespace</title>
+	<!-- Date: 2009-12-03 -->
+	<style type="text/css" media="screen">
+	body {
+	  text-align:center;
+	  margin:20px 0px;
+	}
+	
+	h1 {
+	  font:24px georgia, serif;
+	  text-align: center;
+	  margin:30px 0 10px;
+	} 
+	
+	h1 em {
+	  font-size:14px;
+	}
+	  blockquote {
+	    font:18px georgia;
+	    font-style:italic;
+	  }
+	  .contents {
+	    margin: 0 auto;
+	    text-align: left;
+	    width:960px;
+	  }
+	  
+	 .example {
+	   float: left;
+	   width: 60px;
+	   width:100%;
+	 }
+	 
+	 .example b {
+	   color: #F60;
+	 }
+	 
+	 p {
+	   float: left;
+	   margin-left: 90px;
+	   width: 760px;
+	   padding:0px 10px;
+	 }
+	 
+	 .left, .right {
+	   float: left;
+	   width: 450px;
+	   padding:10px;
+	   margin: 5px;
+	   background: #EEE;
+	 }
+	</style>
+</head>
+<body>
+<div class="contents">
+  <h1>Namespace<br/><em>an Erlang inspired method of organizing functions</em></h1>
+  <p>The purpose of <b>namespace</b> is to provide an organized way to expose public functions without thinking about objects.</p>
+  
+  <blockquote>
+    Interesting idea. Can you explain the use case to me? Why would I want to use namespace() instead of something like...
+  </blockquote>
+
+
+<div class="example">
+<div class="left">
+<pre><code>
+  var obj = (function() {
+    var ret = {};
+    var private = function() { ... };
+    ret.public = function() { private(); };
+    return ret;
+  })();
+</code></pre>
+</div>
+<div class="right">
+<pre><code>
+  (function(){
+    namespace("obj", public);
+
+    function private(){ ... };
+    function public(){ private(); };
+  })();
+</code></pre>
+</div>
+</div>
+
+<p>
+  There is no difference in the outcome between the above. But there is a difference in style. I find the right to be a bit easier on the eyes.
+</p>
+
+
+<p>
+  And it is very easy to take a function public.
+  Here is the above example, with private taken public.  Notice how little on the right had to change.
+</p>
+
+<div class="example">
+<div class="left">
+<pre><code>
+  var obj = (function() {
+    var ret = {};
+    <b>ret.</b>private = function() { ... };
+    ret.public = function() { <b>ret.</b>private(); };
+    return ret;
+  })();
+</code></pre>
+</div>
+<div class="right">
+<pre><code>
+  (function(){
+    namespace("obj", public, <b>private</b>);
+
+    function private(){ ... };
+    function public(){ private(); };
+  })();
+</code></pre>
+</div>
+</div>
+
+<p>
+  And when within the closure, or temporary scope, I don't have to think about whether to
+  prepend `ret` onto a function, unless it from another namespace.  I just focus on the functions, not on if they are public or not.
+</p>
+
+<div class="example">
+<div class="left">
+<pre><code>
+  var another = (function(){
+    var ret = {};
+
+    ret.public = function(){
+      return obj.public();
+    }
+    return ret;
+  })();
+  
+</code></pre>
+</div>
+<div class="right">
+<pre><code>
+  (function(){
+    namespace("another", public);
+
+    function public(){
+      return obj.public();
+    }
+  })();
+</code></pre>
+</div>
+</div>
+
+<p>
+  Lets look at a more complex example.  When working in the scope I only think about the <em>function</em>, not <em>book_ns + function</em>.
+</p>
+
+<div class="example">
+<div class="left">
+<pre><code>
+  var book = (function(){
+    book_ns = {}; // **
+
+    book_ns.get_id = function(event){
+      // return ...
+    }
+
+    book_ns.edit = function(event){
+      var book = book_ns.get_id(event);
+      // ...
+    }
+
+    book_ns.move = function(event){
+      var book = book_ns.get_id(event);
+      // ...
+    }
+
+    book_ns.destroy = function(event){
+      var book = book_ns.get_id(event);
+      // ...
+    }
+    return book;
+  })();
+</code></pre>
+</div>
+<div class="right">
+<pre><code>
+  (function(){
+    namespace("book", get_id, edit, move, destroy);
+
+    function get_id(event){
+      // return ...
+    }
+
+    function edit(event){
+      var book = get_id(event);
+      // ...
+    }
+
+    function move(event){
+      var book = get_id(event);
+      // ...
+    }
+
+    function destroy(event){
+      var book = get_id(event);
+      // ...
+    }
+
+  })();
+</code></pre>
+</div>
+</div>
+<p>
+  ** Notice on the left I use <em>book_ns</em>.  If I used <em>book</em> there would be a namespace collision with my local var book. Which maybe the most natural name.
+</p>
+
+<p>
+  You can create nested namespaces, even if the parent does not already exist.  In the below <em>foo</em> need not already exist.
+<div class="example">
+<div class="left">
+<pre><code>
+  var foo = {};
+  foo.bar = (function() {
+    var ret = {};
+    ret.public = function() {};
+    return ret;
+  })();
+</code></pre>
+</div>
+<div class="right">
+<pre><code>
+  (function(){
+    namespace("foo.bar", public);
+    function public(){};
+  })();
+</code></pre>
+</div>
+</div>
+
+<p>
+  So there you have it.  I recommend giving it a try, that would be the real test on if it is worthy or not.  You may like or you may not.
+</p>
+<p>
+  What I like about it is I think in functions, not in objects. Working this way gets me to think about the code in a different manner.  This of course is style or fashion, and not right nor wrong. Just perhaps ugly or beautiful, which is in the eye of the beholder.
+</p>
+<p>
+  <b><em>Questions? Comments?
+  <br/><br/><br/>
+</p>
+</div>
+
+</body>
+</html>
  
