@@ -37,6 +37,36 @@ $(document).ready(function() {
     equals(3, ["a","b","c"].len());
   });
 
+  test("nested namespaces work across multiple source files", function(){
+    stop(5000);
+    expect(3);
+
+    (function(){
+      namespace("nested.files", root);
+      function root() { return "ROOT"; }
+      }
+    )();
+
+    var counter = 0;
+    var both_loaded = function() {
+      if ((counter += 1) == 2){
+        equals("FILE_B", nested.files.b(), "b() is true");
+        equals("FILE_A", nested.files.a(), "a() is true");
+        equals("ROOT", nested.files.root(), "root() is true");
+        start();
+        return true}
+      return false
+    }
+
+    $.getScript("file_b.js", function(){
+      both_loaded();
+    })
+
+    $.getScript("file_a.js", function(){
+      both_loaded();
+    })
+  })
+
 
 
 });
