@@ -1,4 +1,16 @@
 namespace
 an Erlang inspired method for organizing functions
 
-http://jweir.github.com/namespace
+Simple example
+
+    (function(){
+      namespace("example", public);
+    
+      function private(){ return "private" };
+      function public(){ private(); };
+    })();
+    
+    example.public() // -> "private"
+
+
+See http://jweir.github.com/namespace for documentation
