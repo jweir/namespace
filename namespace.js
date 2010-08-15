@@ -22,26 +22,22 @@
 
   namespace(namespace, declare);
 
-  function declare(namespace, definition) {
-    var parts = arguments[0].split(".");
-    var constructor = parts.pop();
-    var space = namespaceFor(parts);
-    space[constructor] = function (options) {
-        var functions = definition.apply(this, arguments);
-        var self = functions[0];
-        if (!(self && self.constructor && self.call && self.apply)) {
-            functions.shift();
-        } else {
-            self = {};
-        }
-        for (var key in self) {
-            this[key] = self[key];
-        }
-        for (var i = 0; i < functions.length; i++) {
-            this[functionName(functions[i])] = functions[i];
-        }
+  function declare(namespace, definition, methods) {
+    var parts = arguments[0].split("."),
+        constructor = parts.pop(),
+        space = namespaceFor(parts),
+        methods = methodsFromArguments(arguments, 2);
+
+    space[constructor] = function() {
+        var self = definition.apply(this, arguments);
+
+        for (var key in self){ this[key] = self[key]; }
+
+        for (var i = 0; i < methods.length; i++) {
+           this[functionName(methods[i])] = methods[i];
+        };
     };
-  }
+  };
 
   function namespace(namespace, functions) {
     if(typeof arguments[0] != "string"){
@@ -62,6 +58,15 @@
     };
   }
 
+  ////////////////////////////////////
+  // Helper functions
+  function methodsFromArguments(args, start){
+    var methods = [];
+    for(var i = (start || 0); i < args.length; i++){
+      methods.push(args[i]);
+    }
+    return methods;
+  }
   function functionName(fn) {
     return fn.name ? fn.name : fn.toString().match(/^\s*function\s+([^\s\(]+)/)[1];
   }

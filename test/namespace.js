@@ -67,29 +67,29 @@ $(document).ready(function() {
     })
   })
 
-  test("able to declare namespace as an object", function () {
-    (function () {
-      declare("com.acme.Person", function (firstName, lastName) {
-        function lastNameFirst() {
-            return lastName + ", " + firstName;
-        }
-        return [ { firstName: firstName, lastName: lastName }, lastNameFirst ];
-      });
-      declare("com.acme.Cat", function () {
-        function vocalize() {
-            return "Meow!";
-        }
-        return [ vocalize ];
-      });
+  test("declare creates a class with public methods", function() {
+    (function(){
+      declare("animals.cat", main, say, legs);
+
+      function main(color){
+        var self = {color:color};
+        return self;
+      }
+
+      function private(){ return 4;}
+      function legs()   { return private(); }
+      function say(word){ return [word,this.color].join(" "); }
+
     })();
 
-    var person = new com.acme.Person("John", "Weir");
+    var cat       = new animals.cat("brown");
+    var other_cat = new animals.cat("black");
 
-    equals("John", person.firstName);
-    equals("Weir", person.lastName);
-    equals("Weir, John", person.lastNameFirst());
+    equals(4, cat.legs());
+    equals("brown", cat.color);
+    equals("meow brown", cat.say("meow"));
+    equals("meow black", other_cat.say("meow"));
 
-    var cat = new com.acme.Cat();
-    equals("Meow!", cat.vocalize());
   });
+
 });
