@@ -20,7 +20,28 @@
   //
   // if no string is given as the first argument, the functions will be scoped to the root
 
-  namespace(namespace);
+  namespace(namespace, declare);
+
+  function declare(namespace, definition) {
+    var parts = arguments[0].split(".");
+    var constructor = parts.pop();
+    var space = namespaceFor(parts);
+    space[constructor] = function (options) {
+        var functions = definition.apply(this, arguments);
+        var self = functions[0];
+        if (!(self && self.constructor && self.call && self.apply)) {
+            functions.shift();
+        } else {
+            self = {};
+        }
+        for (var key in self) {
+            this[key] = self[key];
+        }
+        for (var i = 0; i < functions.length; i++) {
+            this[functionName(functions[i])] = functions[i];
+        }
+    };
+  }
 
   function namespace(namespace, functions) {
     if(typeof arguments[0] != "string"){

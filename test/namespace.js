@@ -67,6 +67,29 @@ $(document).ready(function() {
     })
   })
 
+  test("able to declare namespace as an object", function () {
+    (function () {
+      declare("com.acme.Person", function (firstName, lastName) {
+        function lastNameFirst() {
+            return lastName + ", " + firstName;
+        }
+        return [ { firstName: firstName, lastName: lastName }, lastNameFirst ];
+      });
+      declare("com.acme.Cat", function () {
+        function vocalize() {
+            return "Meow!";
+        }
+        return [ vocalize ];
+      });
+    })();
 
+    var person = new com.acme.Person("John", "Weir");
 
+    equals("John", person.firstName);
+    equals("Weir", person.lastName);
+    equals("Weir, John", person.lastNameFirst());
+
+    var cat = new com.acme.Cat();
+    equals("Meow!", cat.vocalize());
+  });
 });
