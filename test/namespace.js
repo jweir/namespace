@@ -89,7 +89,6 @@ $(document).ready(function() {
     equals("brown", cat.color);
     equals("meow brown", cat.say("meow"));
     equals("meow black", other_cat.say("meow"));
-
   });
 
 });

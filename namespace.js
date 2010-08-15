@@ -19,25 +19,7 @@
   //    namespaces("foo.bar", func)
   //
   // if no string is given as the first argument, the functions will be scoped to the root
-
   namespace(namespace, declare);
-
-  function declare(namespace, definition, methods) {
-    var parts = arguments[0].split("."),
-        constructor = parts.pop(),
-        space = namespaceFor(parts),
-        methods = methodsFromArguments(arguments, 2);
-
-    space[constructor] = function() {
-        var self = definition.apply(this, arguments);
-
-        for (var key in self){ this[key] = self[key]; }
-
-        for (var i = 0; i < methods.length; i++) {
-           this[functionName(methods[i])] = methods[i];
-        };
-    };
-  };
 
   function namespace(namespace, functions) {
     if(typeof arguments[0] != "string"){
@@ -52,14 +34,30 @@
     };
   };
 
+  function declare(namespace, definition, methods) {
+    var parts = arguments[0].split("."),
+        constructor = parts.pop(),
+        space = namespaceFor(parts),
+        methods = methodsFromArguments(arguments, 2);
+
+    space[constructor] = function() {
+      var self = definition.apply(this, arguments);
+      for (var key in self){ this[key] = self[key]; }
+    };
+
+    for (var i = 0; i < methods.length; i++) {
+      space[constructor].prototype[functionName(methods[i])] = methods[i];
+    };
+  };
+
+  ////////////////////////////////////
+  // Helper functions
   function namespace_for_root(functions){
     for (var i=0; i < arguments.length; i++) {
       root[functionName(arguments[i])] = arguments[i]
     };
   }
 
-  ////////////////////////////////////
-  // Helper functions
   function methodsFromArguments(args, start){
     var methods = [];
     for(var i = (start || 0); i < args.length; i++){
