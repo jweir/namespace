@@ -90,4 +90,16 @@ $(document).ready(function() {
     equals("meow black", other_cat.say("meow"));
   });
 
+  test("declare can append methods", function(){
+    (function(){
+      declare("animals.dog",
+        function init(color) {return {color:color}})
+
+      (function bark(word){ return this.color+" "+word; })
+    })();
+
+    var dog = new animals.dog("gray");
+    equals("gray woof!", dog.bark("woof!"));
+  });
+
 });

@@ -45,9 +45,14 @@
       for (var key in self){ this[key] = self[key]; }
     };
 
-    for (var i = 0; i < methods.length; i++) {
-      space[constructor].prototype[functionName(methods[i])] = methods[i];
-    };
+    for (var i = 0; i < methods.length; i++) { append(methods[i]); }
+
+    function append(fn){
+      space[constructor].prototype[functionName(fn)] = fn;
+      return append;
+    }
+
+    return append;
   };
 
   ////////////////////////////////////
