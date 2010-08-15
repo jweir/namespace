@@ -34,14 +34,14 @@
     };
   };
 
-  function declare(namespace, definition, methods) {
+  function declare(namespace, init_method, methods) {
     var parts = arguments[0].split("."),
         constructor = parts.pop(),
         space = namespaceFor(parts),
         methods = methodsFromArguments(arguments, 2);
 
     space[constructor] = function() {
-      var self = definition.apply(this, arguments);
+      var self = init_method.apply(this, arguments);
       for (var key in self){ this[key] = self[key]; }
     };
 

@@ -69,9 +69,9 @@ $(document).ready(function() {
 
   test("declare creates a class with public methods", function() {
     (function(){
-      declare("animals.cat", main, say, legs);
+      declare("animals.cat", init, say, legs);
 
-      function main(color){
+      function init(color){
         var self = {color:color};
         return self;
       }
@@ -79,7 +79,6 @@ $(document).ready(function() {
       function private(){ return 4;}
       function legs()   { return private(); }
       function say(word){ return [word,this.color].join(" "); }
-
     })();
 
     var cat       = new animals.cat("brown");
