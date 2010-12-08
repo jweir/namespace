@@ -27,18 +27,18 @@
       return namespace_for_root.apply(this, arguments);
     }
 
-    var parts = arguments[0].split(".")
+    var parts = arguments[0].split("."),
         space = namespaceFor(parts);
 
     for (var i=1; i < arguments.length; i++) {
-      space[functionName(arguments[i])] = arguments[i]
-    };
-  };
+      space[functionName(arguments[i])] = arguments[i];
+    }
+  }
 
   function namespace_for_root(functions){
     for (var i=0; i < arguments.length; i++) {
-      root[functionName(arguments[i])] = arguments[i]
-    };
+      root[functionName(arguments[i])] = arguments[i];
+    }
   }
 
   function functionName(fn) {
@@ -50,9 +50,8 @@
 
     for (var i=0; i < parts.length; i++) {
       space = space[parts[i]] = space[parts[i]] || {};
-    };
+    }
     return space;
   }
 
 })(this); // <- change this if you want to change the scope of namespace
-
