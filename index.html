@@ -11,13 +11,13 @@
 	  text-align:center;
 	  margin:20px 0px;
 	}
-	
+
 	h1 {
 	  font:24px georgia, serif;
 	  text-align: center;
 	  margin:30px 0 10px;
-	} 
-	
+	}
+
 	h1 em {
 	  font-size:14px;
 	}
@@ -30,24 +30,24 @@
 	    text-align: left;
 	    width:960px;
 	  }
-	  
+
 	 .example {
 	   float: left;
 	   width: 60px;
 	   width:100%;
 	 }
-	 
+
 	 .example b {
 	   color: #F60;
 	 }
-	 
-	 p, ul {
+
+	 p, ul, hr {
 	   float: left;
 	   margin-left: 90px;
 	   width: 760px;
 	   padding:0px 10px;
 	 }
-	 
+
 	 .left, .right {
 	   float: left;
 	   width: 450px;
@@ -55,7 +55,7 @@
 	   margin: 5px;
 	   background: #EEE;
 	 }
-	 
+
 	 .comments {
 	   font:14px helvetica, arial, "san-serif";
 	   float: left;
@@ -72,12 +72,19 @@
     <em>source at <a href="http://github.com/jweir/namespace">Github</a> and <a href="http://jweir.github.com/namespace/test">tests here</a> </em>
   </h1>
   <p>The purpose of <b>namespace</b> is to provide an organized way to expose public functions without thinking about objects.</p>
-  
+
   <blockquote>
     Interesting idea. Can you explain the use case to me? Why would I want to use namespace() instead of something like...
   </blockquote>
 
-
+  <div class="exmaple">
+    <div class="left" style="text-align:center">
+      <em>Rusty old style</em>
+    </div>
+    <div class="left" style="text-align:center">
+      <em>Namespace style</em>
+    </div>
+  </div>
 <div class="example">
 <div class="left">
 <pre><code>
@@ -150,7 +157,7 @@
     }
     return ret;
   })();
-  
+
 </code></pre>
 </div>
 <div class="right">
@@ -267,13 +274,16 @@
     <li>Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5</li>
     <li>JavaScript-C 1.7.0 2007-10-03</li>
   </ul>
+</p>
 <script type="text/javascript">
 
 var disqus_developer = true;
 </script>
+<hr/>
 <p>
-  <b><em>Questions? Comments?</em></b> Use the below XSS... or email me <em>john <span style="display:none">smith</span> at <span style="display:none">mail.</span> smokinggun.com</em>
-  
+<b><em>Questions? Comments?</em></b> Use the below XSS, email me <em>john <span style="display:none">smith</span> at <span style="display:none">mail.</span> smokinggun.com</em> or <a href="http://twitter.com/#!/tweetatweir">Tweet me</a>
+</p>
+<hr/>
 <div class="comments">
   <p id="disqus_thread">
     <script type="text/javascript" src="http://disqus.com/forums/jweirongithub/embed.js"></script><noscript><a href="http://disqus.com/forums/jweirongithub/?url=ref">View the discussion thread.</a></noscript><a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
@@ -292,7 +302,7 @@ var disqus_developer = true;
   })();
   //]]>
   </script>
-  
+
   <br/><br/><br/>
 </div>
 </div>
