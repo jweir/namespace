@@ -65,7 +65,26 @@ $(document).ready(function() {
     $.getScript("file_a.js", function(){
       both_loaded();
     })
-  })
+  });
+
+
+  test("test objects can be passed in", function(){
+    (function(){
+      var obj = {
+         myVar1:'23',
+         myVar2: 12345,
+         myFunction: function(myVar){
+            return myVar;
+         }
+      }
+      namespace("objspace", obj);
+    })();
+
+    equals(23, objspace.myVar1);
+    equals(12345, objspace.myVar2);
+    equals('test', objspace.myFunction('test'));
+    equals(undefined, objspace.not_here);
+  });
 
 
 
