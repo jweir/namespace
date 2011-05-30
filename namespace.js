@@ -20,9 +20,7 @@
   //
   // if no string is given as the first argument, the functions will be scoped to the root
 
-  namespace(namespace);
-
-  function namespace(namespace, functions) {
+  function namespace(mynamespace, functions) {
     if(typeof arguments[0] != "string"){
       return namespace_for_root.apply(this, arguments);
     }
@@ -53,5 +51,6 @@
     }
     return space;
   }
-
+ 
+  namespace(namespace);
 })(this); // <- change this if you want to change the scope of namespace
