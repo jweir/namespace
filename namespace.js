@@ -1,5 +1,4 @@
 (function(root){
-
   // Provides namespaced access to functions within a closure, temporary scope.
   //
   // useage
@@ -19,10 +18,9 @@
   //    namespaces("foo.bar", func)
   //
   // if no string is given as the first argument, the functions will be scoped to the root
-
-  function namespace(mynamespace, functions) {
+  function namespace(moduleNamespace, functions) {
     if(typeof arguments[0] != "string"){
-      return namespace_for_root.apply(this, arguments);
+      return namespaceForRoot.apply(this, arguments);
     }
 
     var parts = arguments[0].split("."),
@@ -33,7 +31,7 @@
     }
   }
 
-  function namespace_for_root(functions){
+  function namespaceForRoot(functions){
     for (var i=0; i < arguments.length; i++) {
       root[functionName(arguments[i])] = arguments[i];
     }
@@ -51,6 +49,6 @@
     }
     return space;
   }
- 
+
   namespace(namespace);
-})(this); // <- change this if you want to change the scope of namespace
+}(this)); // <- change this if you want to change the scope of namespace
