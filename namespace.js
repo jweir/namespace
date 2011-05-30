@@ -14,8 +14,22 @@
   //    function publicFn(n){ return privateFn(n);}
   //    function anotherFn(n){ return "another result";}
   //  })();
+  //  space2.publicFn("good"); /* => "good and private" */
+  //  
+  //  Example2
+  //  (function(){
+  //    var obj = {
+  //       myVar1:'23',
+  //       myVar2: 12345,
+  //       myFunction: function(myVar){
+  //          return myVar;
+  //       }
+  //    }
+  //    namespace("space2", obj);
+  //  })();
   //
-  // space.publicFn("good"); /* => "good and private" */
+  // space2.myFunction("good"); /* => "good" */
+  // space2.myVar1; /* => "23" */
   //
   // accepts nested namespaces, even if the parent does not yet exist
   //    namespaces("foo.bar", func)
@@ -30,7 +44,16 @@
         space = namespaceFor(parts);
 
     for (var i=1; i < arguments.length; i++) {
-      space[functionName(arguments[i])] = arguments[i];
+      var arg = arguments[i];
+      if(typeof(arg) == 'object' && arg != null){
+        for(var prop in arg){
+          if (arg.hasOwnProperty(prop)) {
+            space[functionName(prop)] = arg[prop];
+          }
+        }
+      }else if(typeof(arg) == 'function'){
+        space[functionName(arg)] = arg;     
+      }
     }
   }
 
@@ -41,6 +64,9 @@
   }
 
   function functionName(fn) {
+    if (typeof(fn) === 'string'){
+        return fn;
+    }
     return fn.name ? fn.name : fn.toString().match(/^\s*function\s+([^\s\(]+)/)[1];
   }
 
