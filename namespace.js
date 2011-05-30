@@ -1,18 +1,21 @@
 (function(root){
-  // Provides namespaced access to functions within a closure, temporary scope.
+  // Creates namespaced functions within a closure.
+  // Public domain (no copyright) http://github.com/jweir/namespace
+  // John Weir john@famedriver.com
   //
-  // useage
+  // Useage (within a closure)
+  // namepace("moduleName", function1, function2, ...)
+  //
+  // Example
   //  (function(){
-  //    namespace("space", public_func);
+  //    namespace("space", publicFn, anotherFn);
   //
-  //    function private_func(n){ return [n, "private"].join(" and ")};
-  //    function public_func(n){ return private_func(n);}
+  //    function privateFn(n){ return [n, "private"].join(" and ")};
+  //    function publicFn(n){ return privateFn(n);}
+  //    function anotherFn(n){ return "another result";}
   //  })();
   //
-  //  space.public_func("good"); /* => "good and private" */
-  //
-  // allows one or more functions
-  //    namespaces("foo", func_a, func_b, ...)
+  // space.publicFn("good"); /* => "good and private" */
   //
   // accepts nested namespaces, even if the parent does not yet exist
   //    namespaces("foo.bar", func)
