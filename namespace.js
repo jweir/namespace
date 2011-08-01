@@ -1,47 +1,50 @@
 (function(root){
   // Creates namespaced functions within a closure.
-  // Public domain (no copyright) http://github.com/jweir/namespace
-  // John Weir john@famedriver.com
   //
-  // Useage (within a closure)
-  // namepace("moduleName", function1, function2, ...)
+  // http://github.com/jweir/namespace
+  // Copyright (c) 2011 John Weir john@famedriver.com
   //
-  // Example
-  //  (function(){
-  //    namespace("space", publicFn, anotherFn);
+  // License: Public Domain
   //
-  //    function privateFn(n){ return [n, "private"].join(" and ")};
-  //    function publicFn(n){ return privateFn(n);}
-  //    function anotherFn(n){ return "another result";}
-  //  })();
+  // Usage (within a closure):
   //
-  // space.publicFn("good"); /* => "good and private" */
+  //   namepace(moduleName, function1, function2, ...);
   //
-  // accepts nested namespaces, even if the parent does not yet exist
-  //    namespaces("foo.bar", func)
+  // Example:
   //
-  // if no string is given as the first argument, the functions will be scoped to the root
+  //   (function(){
+  //     namespace("space", publicFn, anotherFn);
+  //
+  //     function privateFn(n) { return [n, "private"].join(" and "); }
+  //     function publicFn(n)  { return privateFn(n); }
+  //     function anotherFn(n) { return "another result"; }
+  //   }());
+  //
+  //   space.publicFn("good"); /* => "good and private" */
+  //
+  // Accepts nested namespaces, even if the parent does not yet exist.
+  //
+  //   namespaces("foo.bar", func);
+  //
+  // If no string is given as the first argument, the functions will be scoped to the root.
+
   function namespace(moduleNamespace, functions) {
-    if(typeof arguments[0] != "string"){
-      return namespaceForRoot.apply(this, arguments);
+    if (typeof arguments[0] != "string"){
+      var space = root,
+          i = 0;
+    }
+    else {
+      var space = namespaceFor(arguments[0].split(".")),
+          i = 1;
     }
 
-    var parts = arguments[0].split("."),
-        space = namespaceFor(parts);
-
-    for (var i=1; i < arguments.length; i++) {
+    for (var l = arguments.length; i < l; i++) {
       space[functionName(arguments[i])] = arguments[i];
     }
   }
 
-  function namespaceForRoot(functions){
-    for (var i=0; i < arguments.length; i++) {
-      root[functionName(arguments[i])] = arguments[i];
-    }
-  }
-
   function functionName(fn) {
-    return fn.name ? fn.name : fn.toString().match(/^\s*function\s+([^\s\(]+)/)[1];
+    return fn.name || fn.toString().match(/^\s*function\s+([^\s\(]+)/)[1];
   }
 
   function namespaceFor(parts) {
