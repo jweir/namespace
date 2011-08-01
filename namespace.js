@@ -29,13 +29,14 @@
   // If no string is given as the first argument, the functions will be scoped to the root.
 
   function namespace(moduleNamespace, functions) {
+    var space, i;
+
     if (typeof arguments[0] != "string"){
-      var space = root,
-          i = 0;
-    }
-    else {
-      var space = namespaceFor(arguments[0].split(".")),
-          i = 1;
+      space = root;
+      i = 0;
+    } else {
+      space = namespaceFor(arguments[0].split("."));
+      i = 1;
     }
 
     for (var l = arguments.length; i < l; i++) {
