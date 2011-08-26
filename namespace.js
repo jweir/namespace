@@ -18,7 +18,7 @@
   //     function privateFn(n) { return [n, "private"].join(" and "); }
   //     function publicFn(n)  { return privateFn(n); }
   //     function anotherFn(n) { return "another result"; }
-  //   }());
+  //   })();
   //
   //   space.publicFn("good"); /* => "good and private" */
   //
