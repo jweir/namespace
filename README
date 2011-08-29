@@ -8,7 +8,7 @@ Simple example
     
       function private(){ return "private" };
       function public(){ private(); };
-    })();
+    }());
     
     example.public() // -> "private"
 
